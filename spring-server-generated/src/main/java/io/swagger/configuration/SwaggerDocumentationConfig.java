@@ -54,5 +54,4 @@ public class SwaggerDocumentationConfig {
                 .contact(new io.swagger.v3.oas.models.info.Contact()
                     .email("632901@student.inholland.nl")));
     }
-///
 }
