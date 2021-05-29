@@ -5,6 +5,7 @@
  */
 package io.swagger.api;
 
+import io.swagger.model.RegistrationDTO;
 import io.swagger.model.Result;
 import io.swagger.model.UserToCreate;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,7 +48,7 @@ public interface RegisterApi {
         consumes = { "application/json" }, 
         method = RequestMethod.POST)
     ResponseEntity<Result> register(@NotNull @Parameter(in = ParameterIn.QUERY, description = "To give the user either the role Customer or Employee" ,required=true,schema=@Schema(allowableValues={ "Employee", "Customer" }
-)) @Valid @RequestParam(value = "userType", required = true) String userType, @Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody UserToCreate body);
+)) @Valid @RequestParam(value = "userType", required = true) String userType, @Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody RegistrationDTO registrationDTO);
 
 }
 

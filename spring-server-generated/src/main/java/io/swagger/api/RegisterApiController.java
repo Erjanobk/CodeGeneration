@@ -1,8 +1,10 @@
 package io.swagger.api;
 
+import io.swagger.model.RegistrationDTO;
 import io.swagger.model.Result;
 import io.swagger.model.UserToCreate;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.service.UserToCreateService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -14,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,6 +45,8 @@ public class RegisterApiController implements RegisterApi {
     private final ObjectMapper objectMapper;
 
     private final HttpServletRequest request;
+    @Autowired
+    private UserToCreateService userToCreateService;
 
     @org.springframework.beans.factory.annotation.Autowired
     public RegisterApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -50,18 +55,13 @@ public class RegisterApiController implements RegisterApi {
     }
 
     public ResponseEntity<Result> register(@NotNull @Parameter(in = ParameterIn.QUERY, description = "To give the user either the role Customer or Employee" ,required=true,schema=@Schema(allowableValues={ "Employee", "Customer" }
-)) @Valid @RequestParam(value = "userType", required = true) String userType,@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody UserToCreate body) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Result>(objectMapper.readValue("{\n  \"Message\" : \"User has been registered\",\n  \"Success\" : true\n}", Result.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Result>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+)) @Valid @RequestParam(value = "userType", required = true) String userType,@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody RegistrationDTO registrationDTO) {
+        if (userToCreateService.cheackMail(registrationDTO)) {
+            userToCreateService.save(registrationDTO);
+            return new ResponseEntity<Result>(HttpStatus.OK);
+        } else {
+
+            return new ResponseEntity<Result>(HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<Result>(HttpStatus.NOT_IMPLEMENTED);
     }
-
 }

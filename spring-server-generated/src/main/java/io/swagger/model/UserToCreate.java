@@ -6,17 +6,28 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * UserToCreate
  */
+@Entity
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-27T13:17:09.505Z[GMT]")
 
 
 public class UserToCreate   {
+
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private int userId;
   @JsonProperty("username")
   private String username = null;
 
@@ -32,36 +43,21 @@ public class UserToCreate   {
   @JsonProperty("lastName")
   private String lastName = null;
 
+  public UserToCreate(){
+
+  }
+  public UserToCreate(String username,String password,String email,String firstName,String lastName, UserTypeEnum userType){
+    this.username=username;
+    this.password=password;
+    this.email=email;
+    this.firstName=firstName;
+    this.lastName=lastName;
+    this.userType=userType;
+  }
   /**
    * Gets or Sets userType
    */
-  public enum UserTypeEnum {
-    EMPLOYEE("Employee"),
-    
-    CUSTOMER("Customer");
 
-    private String value;
-
-    UserTypeEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static UserTypeEnum fromValue(String text) {
-      for (UserTypeEnum b : UserTypeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("userType")
   private UserTypeEnum userType = UserTypeEnum.CUSTOMER;
 
@@ -83,6 +79,13 @@ public class UserToCreate   {
 
   public void setUsername(String username) {
     this.username = username;
+  }
+  public int getUserId() {
+    return userId;
+  }
+
+  public void setUserId(int userId) {
+    this.userId = userId;
   }
 
   public UserToCreate password(String password) {
