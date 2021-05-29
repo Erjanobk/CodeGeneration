@@ -1,4 +1,6 @@
-package io.swagger.model;
+package io.swagger.DTO;
+
+import io.swagger.model.UserTypeEnum;
 
 public class RegistrationDTO {
     private String userName;

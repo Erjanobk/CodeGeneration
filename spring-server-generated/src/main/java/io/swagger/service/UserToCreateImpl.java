@@ -1,6 +1,6 @@
 package io.swagger.service;
 
-import io.swagger.model.RegistrationDTO;
+import io.swagger.DTO.RegistrationDTO;
 import io.swagger.model.UserToCreate;
 import io.swagger.repository.UserToCreateRepository;
 import lombok.extern.java.Log;
