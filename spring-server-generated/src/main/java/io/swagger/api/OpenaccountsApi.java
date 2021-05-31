@@ -5,6 +5,7 @@
  */
 package io.swagger.api;
 
+import io.swagger.model.Account;
 import io.swagger.model.AccountResult;
 import io.swagger.model.CreateCustomer;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,7 +34,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-27T13:17:09.505Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-29T12:01:54.710Z[GMT]")
 @Validated
 public interface OpenaccountsApi {
 
@@ -47,7 +48,7 @@ public interface OpenaccountsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<AccountResult> createAccount(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody CreateCustomer body);
+    ResponseEntity<AccountResult> createAccount(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Account account);
 
 }
 

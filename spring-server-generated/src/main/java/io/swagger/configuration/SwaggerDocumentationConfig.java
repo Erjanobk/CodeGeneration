@@ -12,10 +12,8 @@ import springfox.documentation.service.ApiInfo;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
-import java.util.function.Predicate;
 
-
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-27T13:17:09.505Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-29T12:01:54.710Z[GMT]")
 @Configuration
 public class SwaggerDocumentationConfig {
 
@@ -56,4 +54,5 @@ public class SwaggerDocumentationConfig {
                 .contact(new io.swagger.v3.oas.models.info.Contact()
                     .email("632901@student.inholland.nl")));
     }
+
 }

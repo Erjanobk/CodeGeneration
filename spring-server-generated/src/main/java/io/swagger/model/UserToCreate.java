@@ -1,22 +1,31 @@
 package io.swagger.model;
 
 import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+
+import com.fasterxml.jackson.annotation.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * UserToCreate
  */
+@Entity
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-27T13:17:09.505Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-29T12:01:54.710Z[GMT]")
 
 
 public class UserToCreate   {
+
+  @Id
+//  @JsonManagedReference
+//  @OneToMany(mappedBy = "userid")
+//  @GeneratedValue(strategy = GenerationType.AUTO)
+  @JsonProperty("userId")
+  private int userId;
   @JsonProperty("username")
   private String username = null;
 
@@ -31,6 +40,18 @@ public class UserToCreate   {
 
   @JsonProperty("lastName")
   private String lastName = null;
+
+  public UserToCreate(){
+
+  }
+  public UserToCreate(String username,String password,String email,String firstName,String lastName, UserTypeEnum userType){
+    this.username=username;
+    this.password=password;
+    this.email=email;
+    this.firstName=firstName;
+    this.lastName=lastName;
+    this.userType=userType;
+  }
 
   /**
    * Gets or Sets userType

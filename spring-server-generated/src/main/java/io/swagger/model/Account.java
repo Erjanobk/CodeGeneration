@@ -1,28 +1,66 @@
 package io.swagger.model;
 
 import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+
+import com.fasterxml.jackson.annotation.*;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
+import java.util.UUID;
+
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * Account
  */
+@Entity
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-27T13:17:09.505Z[GMT]")
-
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-29T12:01:54.710Z[GMT]")
+@SequenceGenerator(name = "acc_seq", initialValue = 9_000_000)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 
 public class Account   {
+  public UUID getIban() {
+    return iban;
+  }
+
+  @Id
+  @GeneratedValue(generator = "uuid2")
+  @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+  @Column(name = "iban", columnDefinition = "VARCHAR(255)")
+  private UUID iban;
+
   @JsonProperty("name")
   private String name = null;
 
   @JsonProperty("balance")
   private BigDecimal balance = null;
+
+  public long getUserid() {
+    return userid;
+  }
+
+  public void setUserid(long userid) {
+    this.userid = userid;
+  }
+
+//  @JsonBackReference
+//  @ManyToOne
+//  @JoinColumn(name="userId", nullable=true)
+  private long userid;
+
+  public Account(String name, BigDecimal balance, AccountTypeEnum accountType, long userid) {
+    this.name = name;
+    this.balance = balance;
+    this.accountType = accountType;
+    this.userid = userid;
+  }
+  public Account(){}
 
   /**
    * Gets or Sets accountType
