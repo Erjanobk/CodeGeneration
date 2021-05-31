@@ -40,14 +40,16 @@ public class RegisterApiController implements RegisterApi {
 
     public ResponseEntity<Result> register(@NotNull @Parameter(in = ParameterIn.QUERY, description = "To give the user either the role Customer or Employee" ,required=true,schema=@Schema(allowableValues={ "Employee", "Customer" }
 )) @Valid @RequestParam(value = "userType", required = true) String userType,@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody RegistrationDTO registrationDTO) {
+        Result result = new Result();
         if (userToCreateService.cheackMail(registrationDTO)) {
             userToCreateService.save(registrationDTO);
-            Result result = new Result();
             result.setSuccess(true);
             result.setMessage("User has been Registered");
             return new ResponseEntity<Result>(result,HttpStatus.CREATED);
         } else {
-            return new ResponseEntity<Result>(HttpStatus.BAD_REQUEST);
+            result.setSuccess(false);
+            result.setMessage("Error! cretation failed");
+            return new ResponseEntity<Result>(result,HttpStatus.BAD_REQUEST);
         }
     }
 }

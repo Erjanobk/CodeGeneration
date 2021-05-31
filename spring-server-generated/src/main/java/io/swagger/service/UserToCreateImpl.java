@@ -4,6 +4,7 @@ import io.swagger.DTO.RegistrationDTO;
 import io.swagger.model.UserToCreate;
 import io.swagger.repository.UserToCreateRepository;
 import lombok.extern.java.Log;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 @Log
@@ -19,7 +20,7 @@ public class UserToCreateImpl implements UserToCreateService {
 
     @Override
     public boolean cheackMail(RegistrationDTO registrationDTO) {
-        String emailChecker =userToCreateRepository.getUserToCreateByEmail(registrationDTO.getEmail());
+        UserToCreate emailChecker =userToCreateRepository.getUserToCreateByEmail(registrationDTO.getEmail());
         if(emailChecker==null){
             return true;
         }
