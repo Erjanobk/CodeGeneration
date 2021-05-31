@@ -5,7 +5,7 @@
  */
 package io.swagger.api;
 
-import io.swagger.DTO.RegistrationDTO;
+import io.swagger.model.DTO.RegistrationDTO;
 import io.swagger.model.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

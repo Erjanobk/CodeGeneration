@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserToCreateRepository extends JpaRepository<UserToCreate,Integer> {
     UserToCreate getUserToCreateByEmail(String email);
+    UserToCreate findUserToCreateByUsername(String userName);
 
 }

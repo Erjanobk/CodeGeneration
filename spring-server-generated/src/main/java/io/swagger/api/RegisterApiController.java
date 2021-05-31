@@ -1,6 +1,6 @@
 package io.swagger.api;
 
-import io.swagger.DTO.RegistrationDTO;
+import io.swagger.model.DTO.RegistrationDTO;
 import io.swagger.model.Result;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.service.UserToCreateService;

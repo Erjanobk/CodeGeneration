@@ -1,4 +1,4 @@
-package io.swagger.DTO;
+package io.swagger.model.DTO;
 
 import io.swagger.model.UserTypeEnum;
 
