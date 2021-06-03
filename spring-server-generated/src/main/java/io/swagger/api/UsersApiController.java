@@ -6,6 +6,7 @@ import io.swagger.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.model.UserToCreate;
 import io.swagger.service.UserToCreateImpl;
+import io.swagger.service.UserToCreateService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -14,7 +15,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +49,8 @@ public class UsersApiController implements UsersApi {
     private final HttpServletRequest request;
     @Autowired
     private UserToCreateImpl userToCreateImpl;
+    @Autowired
+    private UserToCreateService userToCreateService;
 
     @org.springframework.beans.factory.annotation.Autowired
     public UsersApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -70,18 +72,15 @@ public class UsersApiController implements UsersApi {
         return new ResponseEntity<List<Customer>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<User> getUserByID(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("userId") Integer userId) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<User>(objectMapper.readValue("{\n  \"firstName\" : \"rick\",\n  \"lastName\" : \"Dijk\",\n  \"userType\" : \"Employee\",\n  \"userId\" : 100,\n  \"email\" : \"rick123@gmail.com\",\n  \"username\" : \"rickusername\"\n}", User.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
+    public ResponseEntity<UserToCreate> getUserByID(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("userId") Integer userId) {
 
-        return new ResponseEntity<User>(HttpStatus.NOT_IMPLEMENTED);
+        if(userId!=null){
+        UserToCreate user =  userToCreateService.getUserByUserId(userId);
+        return new ResponseEntity<UserToCreate>(user, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<UserToCreate>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     public ResponseEntity<List<UserToCreate>> getUsers(@Parameter(in = ParameterIn.QUERY, description = "find user by userName" ,schema=@Schema()) @Valid @RequestParam(value = "userName", required = false) String userName, @Min(0)@Parameter(in = ParameterIn.QUERY, description = "number of records to skip for pagination" ,schema=@Schema(allowableValues={  }
@@ -92,7 +91,7 @@ public class UsersApiController implements UsersApi {
             return new ResponseEntity<List<UserToCreate>>(userToCreateImpl.getALLUsers(),HttpStatus.OK);
         }
         else {
-           UserToCreate user =  userToCreateImpl.getAllUsersByUserName(userName);
+            UserToCreate user =  userToCreateImpl.getAllUsersByUserName(userName);
             List<UserToCreate>userToCreates = new ArrayList<>();
             userToCreates.add(user);
             return new ResponseEntity<List<UserToCreate>>(userToCreates,HttpStatus.OK);

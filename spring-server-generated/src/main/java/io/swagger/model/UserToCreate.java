@@ -41,16 +41,9 @@ public class UserToCreate   {
   @JsonProperty("lastName")
   private String lastName = null;
 
-  public List<UserTypeEnum> getUserTypeEnums() {
-    return userTypeEnums;
-  }
 
-  public void setUserTypeEnums(List<UserTypeEnum> userTypeEnums) {
-    this.userTypeEnums = userTypeEnums;
-  }
 
-  @ElementCollection(fetch = FetchType.EAGER)
-  private List<UserTypeEnum>userTypeEnums;
+
 
   public UserToCreate(){
 

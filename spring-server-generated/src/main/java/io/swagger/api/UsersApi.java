@@ -60,13 +60,13 @@ public interface UsersApi {
     @RequestMapping(value = "/users/{userId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<User> getUserByID(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("userId") Integer userId);
+    ResponseEntity<UserToCreate> getUserByID(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("userId") Integer userId);
 
 
     @Operation(summary = "Get users", description = "Fetches all users", security = {
         @SecurityRequirement(name = "bearerAuth")    }, tags={ "Users" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Users have been fetched", content = @Content(array = @ArraySchema(schema = @Schema(implementation = User.class)))),
+        @ApiResponse(responseCode = "200", description = "Users have been fetched", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserToCreate.class)))),
         
         @ApiResponse(responseCode = "400", description = "Incorrect input"),
         
