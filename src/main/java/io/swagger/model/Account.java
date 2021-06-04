@@ -19,7 +19,6 @@ import javax.validation.constraints.*;
 @Entity
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-29T12:01:54.710Z[GMT]")
-@SequenceGenerator(name = "acc_seq", initialValue = 9_000_000)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "Account")
 public class Account   {

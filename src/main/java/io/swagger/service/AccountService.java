@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class AccountService implements AccountServiceImplamantation{
@@ -29,7 +30,7 @@ public class AccountService implements AccountServiceImplamantation{
     public String ibanFormat() {
         Random rnd = new Random();
        // String iban = String.format("NL",rnd.nextInt(100),"INHO%07d",rnd.nextInt(1000));
-        String iban = "NL" + rnd.nextInt(100) + "INHO" + rnd.nextLong();
+        String iban = "NL" + rnd.nextInt(100) + "INHO" + ThreadLocalRandom.current().nextInt();
         return iban;
     }
 
