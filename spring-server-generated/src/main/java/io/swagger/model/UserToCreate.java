@@ -2,6 +2,8 @@ package io.swagger.model;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -41,7 +43,8 @@ public class UserToCreate   {
   @JsonProperty("lastName")
   private String lastName = null;
 
-
+  @OneToMany(mappedBy = "userId")
+  private Set<Account> accounts;
 
 
 

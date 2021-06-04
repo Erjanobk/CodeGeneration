@@ -5,6 +5,7 @@
  */
 package io.swagger.api;
 
+import io.swagger.model.Account;
 import io.swagger.model.AccountResult;
 import io.swagger.model.CreateCustomer;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,7 +48,7 @@ public interface OpenaccountsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<AccountResult> createAccount(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody CreateCustomer body);
+    ResponseEntity<AccountResult> createAccount(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Account account);
 
 }
 

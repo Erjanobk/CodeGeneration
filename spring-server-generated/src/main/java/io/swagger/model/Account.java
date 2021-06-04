@@ -1,12 +1,16 @@
 package io.swagger.model;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -16,13 +20,42 @@ import javax.validation.constraints.*;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-27T13:17:09.505Z[GMT]")
 
-
+@Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Table(name = "Account")
 public class Account   {
+  @Id
+  @Column(name = "iban", columnDefinition = "VARCHAR(255)")
+  private String iban;
   @JsonProperty("name")
   private String name = null;
 
   @JsonProperty("balance")
   private BigDecimal balance = null;
+
+
+  public void setIban(String iban) {
+    this.iban = iban;
+  }
+
+  public UserToCreate getUserId() {
+    return userId;
+  }
+
+  public void setUserId(UserToCreate userId) {
+    this.userId = userId;
+  }
+
+  @ManyToOne
+  @JoinColumn(name = "userId",nullable = true)
+  private UserToCreate userId;
+
+  public Account(String name, BigDecimal balance, AccountTypeEnum accountType) {
+    this.name = name;
+    this.balance = balance;
+    this.accountType = accountType;
+  }
+
 
   /**
    * Gets or Sets accountType
