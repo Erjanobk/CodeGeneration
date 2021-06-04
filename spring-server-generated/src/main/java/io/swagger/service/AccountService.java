@@ -1,25 +1,14 @@
 package io.swagger.service;
 
-import io.swagger.Repository.AccountsRepository;
 import io.swagger.model.Account;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service
-public class AccountService implements AccountServiceImplamantation{
-    @Autowired
-    AccountsRepository accountsRepository;
+import java.util.List;
 
-
-    @Override
-    public void save(Account account) {
-        accountsRepository.save(account);
-    }
-
-    @Override
-    public Account GetAccountbyName(String name) {
-        return (Account) accountsRepository.getAccountByName(name);
-    }
-
-
+public interface AccountService {
+    void save(Account account);
+    List<Account> GetAccountbyName(String name);
+    String ibanFormat();
+    boolean ibanCheck(String iban);
+    Account getbyIban(String iban);
+    int deposit(String iban, int amount);
 }

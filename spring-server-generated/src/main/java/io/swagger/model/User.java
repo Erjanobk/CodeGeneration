@@ -1,27 +1,20 @@
 package io.swagger.model;
 
 import java.util.Objects;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.validation.annotation.Validated;
 
-import javax.persistence.ManyToOne;
-import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * User
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-29T12:01:54.710Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-27T13:17:09.505Z[GMT]")
 
 
 public class User   {
-
   @JsonProperty("userId")
   private Integer userId = null;
 
@@ -37,36 +30,6 @@ public class User   {
   @JsonProperty("lastName")
   private String lastName = null;
 
-  /**
-   * Gets or Sets userType
-   */
-  public enum UserTypeEnum {
-    EMPLOYEE("Employee"),
-    
-    CUSTOMER("Customer");
-
-    private String value;
-
-    UserTypeEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static UserTypeEnum fromValue(String text) {
-      for (UserTypeEnum b : UserTypeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("userType")
   private UserTypeEnum userType = UserTypeEnum.CUSTOMER;
 

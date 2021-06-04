@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
  * AccountResult
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-29T12:01:54.710Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-27T13:17:09.505Z[GMT]")
 
 
 public class AccountResult   {
@@ -22,17 +22,17 @@ public class AccountResult   {
   @JsonProperty("message")
   private String message = null;
 
-  public AccountResult IBAN(String IBAN) {
-    this.IBAN = IBAN;
-    return this;
-  }
+//  public AccountResult IBAN(String IBAN) {
+//    this.IBAN = IBAN;
+//    return this;
+//  }
 
   /**
    * Get IBAN
    * @return IBAN
    **/
-  @Schema(example = "NLxxINHO0xxxxxxxxx", required = true, description = "")
-      @NotNull
+  //@Schema(example = "NLxxINHO0xxxxxxxxx", required = true, description = "")
+     // @NotNull
 
     public String getIBAN() {
     return IBAN;

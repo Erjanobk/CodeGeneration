@@ -1,19 +1,18 @@
 package io.swagger.model;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.math.BigDecimal;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+
 import javax.validation.constraints.*;
 
 /**
  * DepositResult
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-29T12:01:54.710Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-27T13:17:09.505Z[GMT]")
 
 
 public class DepositResult   {
@@ -21,10 +20,10 @@ public class DepositResult   {
   private String success = null;
 
   @JsonProperty("CurrentBalance")
-  private BigDecimal currentBalance = null;
+  private int currentBalance;
 
   @JsonProperty("time")
-  private String time = null;
+  private LocalDateTime time = null;
 
   public DepositResult success(String success) {
     this.success = success;
@@ -46,7 +45,7 @@ public class DepositResult   {
     this.success = success;
   }
 
-  public DepositResult currentBalance(BigDecimal currentBalance) {
+  public DepositResult currentBalance(int currentBalance) {
     this.currentBalance = currentBalance;
     return this;
   }
@@ -56,18 +55,16 @@ public class DepositResult   {
    * @return currentBalance
    **/
   @Schema(example = "120", required = true, description = "")
-      @NotNull
 
-    @Valid
-    public BigDecimal getCurrentBalance() {
+  public int getCurrentBalance() {
     return currentBalance;
   }
 
-  public void setCurrentBalance(BigDecimal currentBalance) {
+  public void setCurrentBalance(int currentBalance) {
     this.currentBalance = currentBalance;
   }
 
-  public DepositResult time(String time) {
+  public DepositResult time(LocalDateTime time) {
     this.time = time;
     return this;
   }
@@ -77,13 +74,12 @@ public class DepositResult   {
    * @return time
    **/
   @Schema(example = "02:00 PM", required = true, description = "")
-      @NotNull
 
-    public String getTime() {
+  public LocalDateTime getTime() {
     return time;
   }
 
-  public void setTime(String time) {
+  public void setTime(LocalDateTime time) {
     this.time = time;
   }
 

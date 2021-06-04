@@ -2,65 +2,62 @@ package io.swagger.model;
 
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.*;
-import io.swagger.v3.oas.annotations.Parameter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.math.BigDecimal;
-import java.util.UUID;
-
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * Account
  */
-@Entity
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-29T12:01:54.710Z[GMT]")
-@SequenceGenerator(name = "acc_seq", initialValue = 9_000_000)
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-27T13:17:09.505Z[GMT]")
+
+@Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-
+@Table(name = "Account")
 public class Account   {
-  public UUID getIban() {
-    return iban;
-  }
-
   @Id
-  @GeneratedValue(generator = "uuid2")
-  @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-  @Column(name = "iban", columnDefinition = "VARCHAR(255)")
-  private UUID iban;
-
+  @Column(name = "Iban", columnDefinition = "VARCHAR(255)")
+  private String iban;
   @JsonProperty("name")
   private String name = null;
 
   @JsonProperty("balance")
-  private BigDecimal balance = null;
+  private int balance;
 
-  public long getUserid() {
-    return userid;
+
+  public void setIban(String iban) {
+    this.iban = iban;
+  }
+  public String getIban() {
+    return iban;
   }
 
-  public void setUserid(long userid) {
-    this.userid = userid;
+  public int getUser() {
+    return user.getUserId();
   }
 
-//  @JsonBackReference
-//  @ManyToOne
-//  @JoinColumn(name="userId", nullable=true)
-  private long userid;
+  public void setUser(UserToCreate user) {
+    this.user = user;
+  }
 
-  public Account(String name, BigDecimal balance, AccountTypeEnum accountType, long userid) {
+  @ManyToOne
+  @JoinColumn(name = "userId",nullable = true)
+  private UserToCreate user;
+
+  public Account(String name, int balance, AccountTypeEnum accountType) {
     this.name = name;
     this.balance = balance;
     this.accountType = accountType;
-    this.userid = userid;
   }
   public Account(){}
+
 
   /**
    * Gets or Sets accountType
@@ -115,7 +112,7 @@ public class Account   {
     this.name = name;
   }
 
-  public Account balance(BigDecimal balance) {
+  public Account balance(int balance) {
     this.balance = balance;
     return this;
   }
@@ -125,14 +122,12 @@ public class Account   {
    * @return balance
    **/
   @Schema(example = "100", required = true, description = "")
-      @NotNull
 
-    @Valid
-    public BigDecimal getBalance() {
+  public int getBalance() {
     return balance;
   }
 
-  public void setBalance(BigDecimal balance) {
+  public void setBalance(int balance) {
     this.balance = balance;
   }
 

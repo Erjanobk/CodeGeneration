@@ -1,8 +1,12 @@
 package io.swagger.model;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.validation.annotation.Validated;
 
@@ -15,16 +19,14 @@ import javax.validation.constraints.*;
  */
 @Entity
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-29T12:01:54.710Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-27T13:17:09.505Z[GMT]")
 
 
 public class UserToCreate   {
 
+
   @Id
-//  @JsonManagedReference
-//  @OneToMany(mappedBy = "userid")
-//  @GeneratedValue(strategy = GenerationType.AUTO)
-  @JsonProperty("userId")
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int userId;
   @JsonProperty("username")
   private String username = null;
@@ -41,6 +43,11 @@ public class UserToCreate   {
   @JsonProperty("lastName")
   private String lastName = null;
 
+  @OneToMany(mappedBy = "user")
+  private Set<Account> accounts;
+
+
+
   public UserToCreate(){
 
   }
@@ -52,37 +59,10 @@ public class UserToCreate   {
     this.lastName=lastName;
     this.userType=userType;
   }
-
   /**
    * Gets or Sets userType
    */
-  public enum UserTypeEnum {
-    EMPLOYEE("Employee"),
-    
-    CUSTOMER("Customer");
 
-    private String value;
-
-    UserTypeEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static UserTypeEnum fromValue(String text) {
-      for (UserTypeEnum b : UserTypeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("userType")
   private UserTypeEnum userType = UserTypeEnum.CUSTOMER;
 
@@ -104,6 +84,13 @@ public class UserToCreate   {
 
   public void setUsername(String username) {
     this.username = username;
+  }
+  public int getUserId() {
+    return userId;
+  }
+
+  public void setUserId(int userId) {
+    this.userId = userId;
   }
 
   public UserToCreate password(String password) {
