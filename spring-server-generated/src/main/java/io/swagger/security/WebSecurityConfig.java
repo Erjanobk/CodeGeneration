@@ -24,6 +24,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/register",
             "/users",
             "/users/{userId}",
+            "/openaccounts",
+            "/accounts",
             "/h2/**/**",
             "/swagger-ui/**/**",
             "/swagger-resources/**",
