@@ -1,10 +1,8 @@
 package io.swagger.api;
 
-import io.swagger.model.Customer;
-import io.swagger.model.Update;
-import io.swagger.model.User;
+import io.swagger.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.model.UserToCreate;
+import io.swagger.service.AccountService;
 import io.swagger.service.UserToCreateImpl;
 import io.swagger.service.UserToCreateService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -51,6 +49,8 @@ public class UsersApiController implements UsersApi {
     private UserToCreateImpl userToCreateImpl;
     @Autowired
     private UserToCreateService userToCreateService;
+    @Autowired
+    private AccountService accountService;
 
     @org.springframework.beans.factory.annotation.Autowired
     public UsersApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -58,18 +58,15 @@ public class UsersApiController implements UsersApi {
         this.request = request;
     }
 
-    public ResponseEntity<List<Customer>> getUserAccount(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("userId") Integer userId) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<Customer>>(objectMapper.readValue("[ {\n  \"DateOfBirth\" : \"1995-06-20T00:00:00.000+00:00\",\n  \"Email\" : \"Joshua@gmail.com\",\n  \"IBAN\" : \"NLxxINHO0xxxxxxxxx\",\n  \"Account_type\" : \"savings\",\n  \"UserId\" : 3,\n  \"CustomerName\" : \"Mr Joshua\"\n}, {\n  \"DateOfBirth\" : \"1995-06-20T00:00:00.000+00:00\",\n  \"Email\" : \"Joshua@gmail.com\",\n  \"IBAN\" : \"NLxxINHO0xxxxxxxxx\",\n  \"Account_type\" : \"savings\",\n  \"UserId\" : 3,\n  \"CustomerName\" : \"Mr Joshua\"\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<Customer>>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+    public ResponseEntity<List<Account>> getUserAccount(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("userId") Integer userId) {
+        if(userId!=null){
+           /* Account account =accountService.getAllByUser(userId);
+            List<Account>accounts=new ArrayList<>();
+            accounts.add(account);*/
+           return new ResponseEntity<List<Account>>(accountService.getAllByUser(userId),HttpStatus.OK);
         }
 
-        return new ResponseEntity<List<Customer>>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<List<Account>>(HttpStatus.BAD_REQUEST);
     }
 
     public ResponseEntity<UserToCreate> getUserByID(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("userId") Integer userId) {

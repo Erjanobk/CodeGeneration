@@ -1,13 +1,17 @@
 package io.swagger.repository;
 
 import io.swagger.model.Account;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface AccountRepository extends CrudRepository<Account,String> {
-    Account getAccountByName(String name);
+import java.util.List;
 
-    @Query(Select)
+@Repository
+public interface AccountRepository extends JpaRepository<Account,String> {
+    Account getAccountByName(String name);
+    @Query(value = "Select * from Account where USER_ID=?1",nativeQuery = true)
+    List<Account> getAllByUserid(int userId);
+
 }

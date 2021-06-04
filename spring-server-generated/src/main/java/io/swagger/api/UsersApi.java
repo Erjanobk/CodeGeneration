@@ -5,10 +5,7 @@
  */
 package io.swagger.api;
 
-import io.swagger.model.Customer;
-import io.swagger.model.Update;
-import io.swagger.model.User;
-import io.swagger.model.UserToCreate;
+import io.swagger.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -42,13 +39,13 @@ public interface UsersApi {
     @Operation(summary = "this will allow a user to see his account", description = "", security = {
         @SecurityRequirement(name = "bearerAuth")    }, tags={ "Users" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Successfull request", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Customer.class)))),
+        @ApiResponse(responseCode = "200", description = "Successfull request", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Account.class)))),
         
         @ApiResponse(responseCode = "400", description = "Account fetching Failed") })
     @RequestMapping(value = "/users/{userId}/accounts",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Customer>> getUserAccount(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("userId") Integer userId);
+    ResponseEntity<List<Account>> getUserAccount(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("userId") Integer userId);
 
 
     @Operation(summary = "geting  a user", description = "Get a specific user with the userId", security = {

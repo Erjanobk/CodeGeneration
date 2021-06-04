@@ -5,6 +5,7 @@ import io.swagger.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -33,4 +34,11 @@ public class AccountImplamantation implements AccountService{
         String iban = "NL" + rnd.nextInt(100) + "INHO" + ThreadLocalRandom.current().nextInt();
         return iban;
     }
+
+    @Override
+    public List<Account> getAllByUser(int userId) {
+        return accountRepository.getAllByUserid(userId);
+    }
+
+
 }
