@@ -37,18 +37,21 @@ public class Account   {
   public void setIban(String iban) {
     this.iban = iban;
   }
-
-  public UserToCreate getUserId() {
-    return userId;
+  public String getIban() {
+    return iban;
   }
 
-  public void setUserId(UserToCreate userId) {
-    this.userId = userId;
+  public UserToCreate getUser() {
+    return user;
+  }
+
+  public void setUser(UserToCreate user) {
+    this.user = user;
   }
 
   @ManyToOne
   @JoinColumn(name = "userId",nullable = true)
-  private UserToCreate userId;
+  private UserToCreate user;
 
   public Account(String name, BigDecimal balance, AccountTypeEnum accountType) {
     this.name = name;

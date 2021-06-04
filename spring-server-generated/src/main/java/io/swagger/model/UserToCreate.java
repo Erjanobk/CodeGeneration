@@ -43,7 +43,7 @@ public class UserToCreate   {
   @JsonProperty("lastName")
   private String lastName = null;
 
-  @OneToMany(mappedBy = "userId")
+  @OneToMany(mappedBy = "user")
   private Set<Account> accounts;
 
 
