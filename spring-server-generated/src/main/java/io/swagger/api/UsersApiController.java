@@ -3,15 +3,11 @@ package io.swagger.api;
 import io.swagger.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.service.AccountService;
+import io.swagger.service.UserImplementation;
 import io.swagger.service.UserToCreateImpl;
 import io.swagger.service.UserToCreateService;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,14 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
 import javax.validation.Valid;
@@ -34,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-27T13:17:09.505Z[GMT]")
 @RestController
@@ -51,6 +41,8 @@ public class UsersApiController implements UsersApi {
     private UserToCreateService userToCreateService;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private UserImplementation userImplementation;
 
     @org.springframework.beans.factory.annotation.Autowired
     public UsersApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -96,18 +88,27 @@ public class UsersApiController implements UsersApi {
 
     }
 
-    public ResponseEntity<Update> updateUserById(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("userId") Integer userId,@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody User body) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Update>(objectMapper.readValue("{\n  \"Message\" : \"User has been updated\",\n  \"Success\" : true\n}", Update.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Update>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+    public ResponseEntity<UserToCreate> updateUserById(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("userId") Integer userId,@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody UserToCreate body) {
+
+        User user = new User();
+
+        user.setUserType(body.getUserType());
+        user.setUsername(body.getUsername());
+        user.setLastName(body.getLastName());
+        user.setFirstName(body.getFirstName());
+        user.setEmail(body.getEmail());
+
+        if(userId!= null){
+            userImplementation.updateUser(userId,user);
+            User u = userImplementation.getUserById(userId);
+            return new ResponseEntity<UserToCreate>(HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<UserToCreate>(HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<Update>(HttpStatus.NOT_IMPLEMENTED);
+
     }
+
 
 }

@@ -7,7 +7,7 @@ import java.util.List;
 @Service
 public interface AccountService {
     void save(Account account);
-    Account GetAccountbyName(String name);
+    Account GetAccountByName(String name);
     String ibanFormat();
     List<Account> getAllByUser(int userId);
 }
