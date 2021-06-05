@@ -11,4 +11,5 @@ public interface AccountService {
     boolean ibanCheck(String iban);
     Account getbyIban(String iban);
     int deposit(String iban, int amount);
+    Account withdraw(String iban,int amount);
 }

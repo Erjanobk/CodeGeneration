@@ -28,6 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/accounts",
             "/accounts/{IBAN}",
             "/accounts/{iban}/deposit",
+            "/accounts/{iban}/withdraw",
             "/h2/**/**",
             "/swagger-ui/**/**",
             "/swagger-resources/**",

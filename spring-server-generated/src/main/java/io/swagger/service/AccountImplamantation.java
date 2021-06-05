@@ -3,10 +3,13 @@ package io.swagger.service;
 import io.swagger.model.Account;
 import io.swagger.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -25,7 +28,11 @@ public class AccountImplamantation implements AccountService{
 
     @Override
     public List<Account> GetAccountbyName(String name) {
-        return accountRepository.getAllByName(name);
+        List<Account> accounts = accountRepository.getAllByName(name);
+        if (accounts.isEmpty()){
+            throw new EntityNotFoundException("Wrong Name");
+        }
+        return accounts;
     }
 
     @Override
@@ -50,15 +57,33 @@ public class AccountImplamantation implements AccountService{
 
     @Override
     public Account getbyIban(String iban) {
-        return accountRepository.getAccountByIban(iban);
+        Account account = accountRepository.getAccountByIban(iban);
+        if(Objects.isNull(account)){
+            throw new EntityNotFoundException();
+        }
+        else {
+            return account;
+        }
     }
 
     @Override
     public int deposit(String iban, int amount) {
             Account account = getbyIban(iban);
-            amount = amount + account.getBalance();
-            int id = account.getUser();
-            return accountRepository.depositAccount(amount,id);
+            BigDecimal newamount = account.getBalance().add(BigDecimal.valueOf(amount));
+            return accountRepository.updateBalance(newamount,account.getUser());
+    }
+
+    @Override
+    public Account withdraw(String iban, int amount) {
+        Account account = getbyIban(iban);
+        BigDecimal withdrawAmount = account.getBalance().subtract(BigDecimal.valueOf(amount));
+        if (withdrawAmount.compareTo(BigDecimal.ZERO)<0){
+            return null;
+        }
+        else {
+            accountRepository.updateBalance(withdrawAmount,account.getUser());
+            return getbyIban(iban);
+        }
     }
 
 }

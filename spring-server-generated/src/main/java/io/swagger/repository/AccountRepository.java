@@ -18,9 +18,7 @@ public interface AccountRepository extends JpaRepository<Account,String> {
     @Transactional
     @Modifying
     @Query("update Account a set balance = ?1 where USER_ID = ?2")
-    int depositAccount(int balance, int id);
+    int updateBalance(BigDecimal balance, int id);
 
-    @Query("SELECT u from Account where USER_ID = ?1")
-    List<Account> getAccountbyuserId(int id);
 
 }

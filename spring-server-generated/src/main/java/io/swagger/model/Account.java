@@ -1,5 +1,6 @@
 package io.swagger.model;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,7 +30,7 @@ public class Account   {
   private String name = null;
 
   @JsonProperty("balance")
-  private int balance;
+  private BigDecimal balance;
 
 
   public void setIban(String iban) {
@@ -51,7 +52,7 @@ public class Account   {
   @JoinColumn(name = "userId",nullable = true)
   private UserToCreate user;
 
-  public Account(String name, int balance, AccountTypeEnum accountType) {
+  public Account(String name, BigDecimal balance, AccountTypeEnum accountType) {
     this.name = name;
     this.balance = balance;
     this.accountType = accountType;
@@ -112,7 +113,7 @@ public class Account   {
     this.name = name;
   }
 
-  public Account balance(int balance) {
+  public Account balance(BigDecimal balance) {
     this.balance = balance;
     return this;
   }
@@ -123,11 +124,11 @@ public class Account   {
    **/
   @Schema(example = "100", required = true, description = "")
 
-  public int getBalance() {
+  public BigDecimal getBalance() {
     return balance;
   }
 
-  public void setBalance(int balance) {
+  public void setBalance(BigDecimal balance) {
     this.balance = balance;
   }
 
