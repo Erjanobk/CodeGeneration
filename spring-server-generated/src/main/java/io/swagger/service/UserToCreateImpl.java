@@ -1,6 +1,8 @@
 package io.swagger.service;
 
 import io.swagger.model.DTO.RegistrationDTO;
+import io.swagger.model.Result;
+import io.swagger.model.User;
 import io.swagger.model.UserToCreate;
 import io.swagger.model.UserTypeEnum;
 import io.swagger.repository.UserToCreateRepository;
@@ -33,9 +35,17 @@ public class UserToCreateImpl implements UserToCreateService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public UserToCreate save(RegistrationDTO registrationDTO) {
+    public UserToCreate createUser(RegistrationDTO registrationDTO) throws Exception {
         UserToCreate userToCreate=new UserToCreate(registrationDTO.getUserName(),registrationDTO.getPassword(),registrationDTO.getEmail(),registrationDTO.getFirstName(),registrationDTO.getLastName(),registrationDTO.getUsertype());
-        return userToCreateRepository.save(userToCreate);
+        UserToCreate registered=null;
+        if(cheackMail(registrationDTO)){
+            registered=userToCreateRepository.save(userToCreate);
+            return registered;
+        }
+        else{
+            throw new Exception("User can not be created");
+        }
+
     }
 
     @Override
@@ -60,9 +70,14 @@ public class UserToCreateImpl implements UserToCreateService {
     public UserToCreate getAllUsersByUserName(String username){
         return (UserToCreate) userToCreateRepository.findUserToCreateByUsername(username);
     }
-    public UserToCreate getUserByUserId(int userId){
+    public UserToCreate getUserByUserId(Integer userId) throws Exception {
+        if(userId!=null){
         UserToCreate user = userToCreateRepository.findUserToCreateByUserId(userId);
         return user;
+        }
+        else {
+            throw new Exception("Users can not be found");
+        }
 
     }
 }

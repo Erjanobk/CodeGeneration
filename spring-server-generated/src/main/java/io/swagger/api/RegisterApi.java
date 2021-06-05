@@ -38,7 +38,7 @@ public interface RegisterApi {
         consumes = { "application/json" }, 
         method = RequestMethod.POST)
     ResponseEntity<Result> register(@NotNull @Parameter(in = ParameterIn.QUERY, description = "To give the user either the role Customer or Employee" ,required=true,schema=@Schema(allowableValues={ "Employee", "Customer" }
-)) @Valid @RequestParam(value = "userType", required = true) String userType, @Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody RegistrationDTO registrationDTO);
+)) @Valid @RequestParam(value = "userType", required = true) String userType, @Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody RegistrationDTO registrationDTO) throws Exception;
 
 }
 

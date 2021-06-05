@@ -36,8 +36,12 @@ public class AccountImplamantation implements AccountService{
     }
 
     @Override
-    public List<Account> getAllByUser(int userId) {
+    public List<Account> getAllByUser(Integer userId) throws Exception {
+        if(userId!=null){
         return accountRepository.getAllByUserid(userId);
+        }else{
+            throw new Exception("Accounts can not be retrieved");
+        }
     }
 
 

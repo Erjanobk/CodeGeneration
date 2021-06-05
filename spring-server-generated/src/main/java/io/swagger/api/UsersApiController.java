@@ -46,8 +46,6 @@ public class UsersApiController implements UsersApi {
 
     private final HttpServletRequest request;
     @Autowired
-    private UserToCreateImpl userToCreateImpl;
-    @Autowired
     private UserToCreateService userToCreateService;
     @Autowired
     private AccountService accountService;
@@ -59,23 +57,20 @@ public class UsersApiController implements UsersApi {
     }
 
     public ResponseEntity<List<Account>> getUserAccount(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("userId") Integer userId) {
-        if(userId!=null){
-           /* Account account =accountService.getAllByUser(userId);
-            List<Account>accounts=new ArrayList<>();
-            accounts.add(account);*/
+        try {
            return new ResponseEntity<List<Account>>(accountService.getAllByUser(userId),HttpStatus.OK);
-        }
-
+        }catch (Exception e){
         return new ResponseEntity<List<Account>>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     public ResponseEntity<UserToCreate> getUserByID(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("userId") Integer userId) {
 
-        if(userId!=null){
+        try {
         UserToCreate user =  userToCreateService.getUserByUserId(userId);
         return new ResponseEntity<UserToCreate>(user, HttpStatus.OK);
         }
-        else {
+        catch (Exception e){
             return new ResponseEntity<UserToCreate>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -84,11 +79,10 @@ public class UsersApiController implements UsersApi {
 )) @Valid @RequestParam(value = "skip", required = false) Integer skip, @Min(0) @Max(50) @Parameter(in = ParameterIn.QUERY, description = "maximum number of records to return" ,schema=@Schema(allowableValues={  }, maximum="50"
 , defaultValue="50")) @Valid @RequestParam(value = "limit", required = false, defaultValue="50") Integer limit) {
         if(userName==null){
-
-            return new ResponseEntity<List<UserToCreate>>(userToCreateImpl.getALLUsers(),HttpStatus.OK);
+            return new ResponseEntity<List<UserToCreate>>(userToCreateService.getALLUsers(),HttpStatus.OK);
         }
         else {
-            UserToCreate user =  userToCreateImpl.getAllUsersByUserName(userName);
+            UserToCreate user =  userToCreateService.getAllUsersByUserName(userName);
             List<UserToCreate>userToCreates = new ArrayList<>();
             userToCreates.add(user);
             return new ResponseEntity<List<UserToCreate>>(userToCreates,HttpStatus.OK);

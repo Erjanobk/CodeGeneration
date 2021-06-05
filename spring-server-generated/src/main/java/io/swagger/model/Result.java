@@ -15,12 +15,13 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-27T13:17:09.505Z[GMT]")
 
 
-public class Result   {
+public class Result {
   @JsonProperty("Success")
   private Boolean success = null;
 
   @JsonProperty("Message")
   private String message = null;
+
 
   public Result success(Boolean success) {
     this.success = success;

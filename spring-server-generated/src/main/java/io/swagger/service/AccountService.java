@@ -9,5 +9,5 @@ public interface AccountService {
     void save(Account account);
     Account GetAccountbyName(String name);
     String ibanFormat();
-    List<Account> getAllByUser(int userId);
+    List<Account> getAllByUser(Integer userId) throws Exception;
 }
