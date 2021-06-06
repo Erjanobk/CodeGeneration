@@ -28,7 +28,7 @@ public class Transactions   {
     private String to = null;
 
     @JsonProperty("amount")
-    private BigDecimal amount = null;
+    private double amount = Double.parseDouble(null);
 
     @JsonProperty("userPerforming")
     private String userPerforming = null;
@@ -37,6 +37,7 @@ public class Transactions   {
     private OffsetDateTime transactionDate = null;
 
     private Double dailyLimit = Double.valueOf(100);
+
     public Transactions id(Integer id) {
         this.id = id;
         return this;
@@ -99,7 +100,7 @@ public class Transactions   {
         this.to = to;
     }
 
-    public Transactions amount(BigDecimal amount) {
+    public Transactions amount(double amount) {
         this.amount = amount;
         return this;
     }
@@ -112,11 +113,11 @@ public class Transactions   {
     @NotNull
 
     @Valid
-    public BigDecimal getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

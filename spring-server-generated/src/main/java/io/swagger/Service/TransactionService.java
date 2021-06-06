@@ -1,4 +1,4 @@
-package io.swagger.service;
+package io.swagger.Service;
 
 import org.springframework.stereotype.Service;
 import org.threeten.bp.OffsetDateTime;
@@ -16,16 +16,16 @@ public class TransactionService {
 
     private TransactionRepository transactionRepository ;
 
-    public TransactionService(TransactionRepository transRepo) {
-        this.transactionRepository = transRepo;
-    }
+    //public TransactionService(TransactionRepository transRepo) {
+        //this.transactionRepository = transRepo;
+    //}
 
     //Get all transactions from a specific user using a date margin.
     public List<Transactions> getAllTransactionsWithParam(String userId, @DecimalMin("1") @Valid OffsetDateTime startDate, OffsetDateTime endDate) {
         return (List<Transactions>) transactionRepository.getTransactionByParam(userId, startDate, endDate);
     }
 
-    public List<Transactions> getAllTransactions(Integer id, String from, String to, BigDecimal amount, String userPerforming, OffsetDateTime transactionDate) {
+    public List<Transactions> getAllTransactions(Integer id, String from, String to, double amount, String userPerforming, OffsetDateTime transactionDate) {
         return (List<Transactions>) transactionRepository.getAllTransactions(id, from, to, amount, userPerforming, transactionDate);
     }
 

@@ -11,8 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
-import io.swagger.service.TransactionService;
+import io.swagger.Service.TransactionService;
 import org.threeten.bp.OffsetDateTime;
+
 
 import javax.validation.constraints.*;
 import javax.validation.Valid;
@@ -54,7 +55,7 @@ public class TransactionsApiController implements TransactionsApi {
     }
 
     @Override
-    public ResponseEntity<List<Transactions>> getTransactions(@DecimalMin("1") @Valid String userID, java.time.@DecimalMin("1") @Valid OffsetDateTime startDate, OffsetDateTime endDate) {
+    public ResponseEntity<List<Transactions>> getTransactions(@DecimalMin("1") @Valid String userID, @DecimalMin("1") @Valid OffsetDateTime startDate, OffsetDateTime endDate) {
         try {
             if (userID != null || startDate != null || endDate != null) {
                 return new ResponseEntity<List<Transactions>>(transactionService.getAllTransactionsWithParam(userID, startDate, endDate), HttpStatus.OK);
