@@ -7,12 +7,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.Entity;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * Transactions
  */
+@Entity
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-27T13:17:09.505Z[GMT]")
 
@@ -29,6 +32,9 @@ public class Transactions   {
 
     @JsonProperty("amount")
     private double amount = Double.parseDouble(null);
+
+    @JsonProperty
+    private String message = null;
 
     @JsonProperty("userPerforming")
     private String userPerforming = null;
@@ -145,6 +151,18 @@ public class Transactions   {
         this.transactionDate = transactionDate;
         return this;
     }
+    /**
+     * Get message
+     * @return message
+     */
+    @Schema(example = "This money is for the groceries.", required = true, description = "")
+    @NotNull
+
+    public String GetMessage(){return message;}
+
+    public void setMessage(String message) {this.message = message;}
+
+
 
     /**
      * Get transactionDate

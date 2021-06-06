@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transactions, Integer> {
 
-    Transactions getAllTransactions(Integer id, String from, String to, double amount, String userPerforming, OffsetDateTime transactionDate);
+    Transactions getAllTransactions(Integer id, String from, String to, double amount, String message, String userPerforming, OffsetDateTime transactionDate);
     Transactions getTransactionByID(Integer transactionID);
     Transactions getTransactionByParam(String userID, OffsetDateTime startDate, OffsetDateTime endDate);
     Transactions createTransaction(Transactions t);

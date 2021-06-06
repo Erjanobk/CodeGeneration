@@ -25,8 +25,8 @@ public class TransactionService {
         return (List<Transactions>) transactionRepository.getTransactionByParam(userId, startDate, endDate);
     }
 
-    public List<Transactions> getAllTransactions(Integer id, String from, String to, double amount, String userPerforming, OffsetDateTime transactionDate) {
-        return (List<Transactions>) transactionRepository.getAllTransactions(id, from, to, amount, userPerforming, transactionDate);
+    public List<Transactions> getAllTransactions(Integer id, String from, String to, double amount, String message, String userPerforming, OffsetDateTime transactionDate) {
+        return (List<Transactions>) transactionRepository.getAllTransactions(id, from, to, amount, message, userPerforming, transactionDate);
     }
 
     //Using a specific transaction by transactionId
@@ -38,15 +38,7 @@ public class TransactionService {
     //Create a transaction
     public void createTransaction(Transactions transaction) {
 
-        transaction.id(transaction.getId());
-        transaction.from((transaction.getFrom()));
-        transaction.to(transaction.getTo());
-        transaction.amount((transaction.getAmount()));
-        transaction.userPerforming(transaction.getUserPerforming());
-        transaction.transactionDate(java.time.OffsetDateTime.now());
-
         transactionRepository.createTransaction(transaction);
-
 
     }
 }

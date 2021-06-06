@@ -48,13 +48,14 @@ public class TransactionApiController implements TransactionApi {
         this.request = request;
     }
 
-    public ResponseEntity<Transactions> createTransaction(@Parameter(in = ParameterIn.DEFAULT, description = "", required = true, schema = @Schema()) @Valid @RequestBody CreateTransaction body) {
-
+    @Override
+    public ResponseEntity<Transactions> createTransaction(@Valid CreateTransaction body) {
         Transactions transaction = new Transactions();
         transaction.setId(Integer.valueOf(body.getId()));
         transaction.setFrom(accountResult.getIBAN());
         transaction.setTo(body.getTo());
         transaction.setAmount(body.getAmount());
+        transaction.setMessage(body.getMessage());
         transaction.setUserPerforming(user.getFirstName());
         transaction.setTransactionDate(OffsetDateTime.now());
 
@@ -73,7 +74,5 @@ public class TransactionApiController implements TransactionApi {
             return new ResponseEntity<Transactions>(HttpStatus.BAD_REQUEST);
 
         }
-        return new ResponseEntity<Transactions>(transaction, HttpStatus.OK);
-
-    }
+        return new ResponseEntity<Transactions>(transaction, HttpStatus.OK);    }
 }
