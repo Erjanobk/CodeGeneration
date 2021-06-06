@@ -61,7 +61,7 @@ public class TransactionApiController implements TransactionApi {
         double balance = account.getBalance().doubleValue();
 
         try {
-            if (transaction.getAmount() <= transaction.GetDailyLimit() || transaction.getAmount() <= balance){
+            if (transaction.getAmount() <= transaction.GetDailyLimit() && transaction.getAmount() <= balance){
                 transactionService.createTransaction(transaction);
                 balance = balance - body.getAmount();
                 account.setBalance(BigDecimal.valueOf(balance));
