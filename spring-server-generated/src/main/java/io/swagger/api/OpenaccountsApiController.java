@@ -56,11 +56,16 @@ public class OpenaccountsApiController implements OpenaccountsApi {
     }
 
     public ResponseEntity<AccountResult> createAccount(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Account account) {
-        accountService.save(account);
-        AccountResult results = new AccountResult();
-        results.setMessage("Account Created");
-        results.setIBAN(account.getIban());
-        return new ResponseEntity<AccountResult>(results,HttpStatus.OK);
+        try {
+            accountService.save(account);
+            AccountResult results = new AccountResult();
+            results.setMessage("Account Created");
+            results.setIBAN(account.getIban());
+            return new ResponseEntity<AccountResult>(results, HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<AccountResult>(HttpStatus.BAD_GATEWAY);
+        }
     }
 
 }

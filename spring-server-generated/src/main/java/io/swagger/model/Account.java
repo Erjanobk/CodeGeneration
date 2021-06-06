@@ -40,12 +40,16 @@ public class Account   {
     return iban;
   }
 
-  public int getUser() {
+  public int getUserid() {
     return user.getUserId();
   }
 
   public void setUser(UserToCreate user) {
     this.user = user;
+  }
+
+  public UserToCreate getUser() {
+    return user;
   }
 
   @ManyToOne

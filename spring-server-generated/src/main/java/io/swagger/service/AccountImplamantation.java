@@ -20,10 +20,15 @@ public class AccountImplamantation implements AccountService{
     AccountRepository accountRepository;
 
     @Override
-    public void save(Account account) {
+    public void save(Account account) throws Exception {
         String setiban = ibanFormat();
         account.setIban(setiban);
-        accountRepository.save(account);
+        if (account.getUser() != null) {
+            accountRepository.save(account);
+        }
+        else {
+            throw new Exception("incrorrect user");
+        }
     }
 
     @Override
@@ -59,7 +64,7 @@ public class AccountImplamantation implements AccountService{
     public Account getbyIban(String iban) {
         Account account = accountRepository.getAccountByIban(iban);
         if(Objects.isNull(account)){
-            throw new EntityNotFoundException();
+            throw new IllegalStateException("Wrong Iban");
         }
         else {
             return account;
@@ -67,21 +72,26 @@ public class AccountImplamantation implements AccountService{
     }
 
     @Override
-    public int deposit(String iban, int amount) {
+    public int deposit(String iban, int amount) throws Exception {
             Account account = getbyIban(iban);
             BigDecimal newamount = account.getBalance().add(BigDecimal.valueOf(amount));
-            return accountRepository.updateBalance(newamount,account.getUser());
+            if (account != null) {
+                return accountRepository.updateBalance(newamount, account.getUserid());
+            }
+            else {
+                throw new Exception("incorrect iban");
+            }
     }
 
     @Override
-    public Account withdraw(String iban, int amount) {
+    public Account withdraw (String iban, int amount) throws Exception {
         Account account = getbyIban(iban);
         BigDecimal withdrawAmount = account.getBalance().subtract(BigDecimal.valueOf(amount));
         if (withdrawAmount.compareTo(BigDecimal.ZERO)<0){
-            return null;
+            throw new Exception("Balance too low");
         }
         else {
-            accountRepository.updateBalance(withdrawAmount,account.getUser());
+            accountRepository.updateBalance(withdrawAmount,account.getUserid());
             return getbyIban(iban);
         }
     }

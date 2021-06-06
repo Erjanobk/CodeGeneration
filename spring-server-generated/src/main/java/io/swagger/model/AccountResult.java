@@ -15,7 +15,7 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-27T13:17:09.505Z[GMT]")
 
 
-public class AccountResult   extends  Exception{
+public class AccountResult{
   @JsonProperty("IBAN")
   private String IBAN = null;
 

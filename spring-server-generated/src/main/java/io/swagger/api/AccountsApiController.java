@@ -48,12 +48,17 @@ public class AccountsApiController implements AccountsApi {
     }
 
     public ResponseEntity<DepositResult> accountDeposit(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("iban") String iban,@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Deposit body) {
-        accountService.deposit(iban,body.getDepositAmount());
-        DepositResult result = new DepositResult();
-        result.setSuccess("Balance deposited successfuly");
-        result.setTime(LocalDateTime.now());
-        //result.setCurrentBalance(amount);
-        return new ResponseEntity<DepositResult>(result,HttpStatus.OK);
+        try {
+            accountService.deposit(iban, body.getDepositAmount());
+            DepositResult result = new DepositResult();
+            result.setSuccess("Balance deposited successfuly");
+            result.setTime(LocalDateTime.now());
+            //result.setCurrentBalance(amount);
+            return new ResponseEntity<DepositResult>(result, HttpStatus.OK);
+        }
+        catch (Exception e){
+            return ResponseEntity.status((HttpStatus.BAD_GATEWAY)).build();
+        }
     }
 
     public ResponseEntity<Void> accountID(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("IBAN") Integer IBAN) {
@@ -62,15 +67,15 @@ public class AccountsApiController implements AccountsApi {
     }
 
     public ResponseEntity<Withdrawresult> accountWithdrawl(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("iban") String iban,@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Withdraw body) {
-        Account account = accountService.withdraw(iban,body.getWithdrawAmount());
-        if (account == null){
-            return new ResponseEntity<Withdrawresult>(HttpStatus.BAD_GATEWAY);
-        }
-        else {
+        try {
+            Account account = accountService.withdraw(iban,body.getWithdrawAmount());
             Withdrawresult withdrawresult = new Withdrawresult();
-            withdrawresult.setRemainingbalance(account.getBalance());
+            //withdrawresult.setRemainingbalance(account.getBalance());
             withdrawresult.setSuccess("withdraw success");
             return new ResponseEntity<>(withdrawresult,HttpStatus.ACCEPTED);
+        }
+        catch (Exception e){
+            return ResponseEntity.status((HttpStatus.BAD_GATEWAY)).build();
         }
     }
 
@@ -86,12 +91,14 @@ public class AccountsApiController implements AccountsApi {
     }
 
     public ResponseEntity<Account> getAccounts(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("IBAN") String IBAN) {
-
+        Account account = accountService.getbyIban(IBAN);
         try {
-            return new ResponseEntity<Account>(accountService.getbyIban(IBAN),HttpStatus.OK);
+            return new ResponseEntity<Account>(account,HttpStatus.OK);
         }
-        catch (EntityNotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        catch (IllegalStateException e){
+            return new ResponseEntity<Account>(account,HttpStatus.BAD_REQUEST);
+            //throw new IllegalStateException(e.getMessage());
+            //return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
