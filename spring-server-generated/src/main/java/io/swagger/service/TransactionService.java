@@ -1,5 +1,6 @@
-package io.swagger.Service;
+package io.swagger.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.threeten.bp.OffsetDateTime;
 import io.swagger.repository.TransactionRepository;
@@ -13,12 +14,8 @@ import java.util.List;
 
 @Service
 public class TransactionService {
-
+    @Autowired
     private TransactionRepository transactionRepository ;
-
-    //public TransactionService(TransactionRepository transRepo) {
-    //this.transactionRepository = transRepo;
-    //}
 
     //Get all transactions from a specific user using a date margin.
     public List<Transactions> getAllTransactionsWithParam(String userId, @DecimalMin("1") @Valid OffsetDateTime startDate, OffsetDateTime endDate) {

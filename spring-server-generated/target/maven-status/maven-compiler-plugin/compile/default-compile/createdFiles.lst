@@ -41,6 +41,7 @@ io\swagger\api\ApiException.class
 io\swagger\configuration\CustomInstantDeserializer$2.class
 io\swagger\configuration\CustomInstantDeserializer$FromDecimalArguments.class
 io\swagger\configuration\CustomInstantDeserializer$1.class
+io\swagger\repository\TransactionRepository.class
 io\swagger\configuration\CustomInstantDeserializer$10.class
 io\swagger\model\Deposit.class
 io\swagger\configuration\CustomInstantDeserializer$8.class
@@ -57,6 +58,7 @@ io\swagger\api\ApiOriginFilter.class
 io\swagger\api\RegisterApi.class
 io\swagger\api\UsersApi.class
 io\swagger\security\WebSecurityConfig.class
+io\swagger\service\TransactionService.class
 io\swagger\api\AccountsApiController.class
 io\swagger\model\DTO\ExceptionDTO.class
 io\swagger\api\AccountsApi.class

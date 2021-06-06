@@ -194,6 +194,7 @@ public class Transactions   {
             Objects.equals(this.from, transactions.from) &&
             Objects.equals(this.to, transactions.to) &&
             Objects.equals(this.amount, transactions.amount) &&
+            Objects.equals(this.message, transactions.message) &&
             Objects.equals(this.userPerforming, transactions.userPerforming) &&
             Objects.equals(this.transactionDate, transactions.transactionDate);
   }
@@ -212,6 +213,7 @@ public class Transactions   {
     sb.append("    from: ").append(toIndentedString(from)).append("\n");
     sb.append("    to: ").append(toIndentedString(to)).append("\n");
     sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
+    sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    userPerforming: ").append(toIndentedString(userPerforming)).append("\n");
     sb.append("    transactionDate: ").append(toIndentedString(transactionDate)).append("\n");
     sb.append("}");

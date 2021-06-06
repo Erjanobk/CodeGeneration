@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import io.swagger.model.AccountResult;
 import io.swagger.model.User;
 import io.swagger.model.Account;
-import io.swagger.Service.TransactionService;
+import io.swagger.service.TransactionService;
 
 
 import javax.validation.Valid;
@@ -31,7 +32,7 @@ public class TransactionApiController implements TransactionApi {
     private static final Logger log = LoggerFactory.getLogger(TransactionApiController.class);
 
     private final ObjectMapper objectMapper;
-
+    @Autowired
     private TransactionService transactionService;
 
     private AccountResult accountResult;
