@@ -1,37 +1,28 @@
 package io.swagger.api;
 
 import io.swagger.model.CreateTransaction;
-import io.swagger.model.TransactionResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.model.Transactions;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
+import io.swagger.model.AccountResult;
+import io.swagger.model.User;
+import io.swagger.model.Account;
+import io.swagger.Service.TransactionService;
 
-import javax.validation.constraints.*;
+
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-27T13:17:09.505Z[GMT]")
 @RestController
@@ -41,6 +32,14 @@ public class TransactionApiController implements TransactionApi {
 
     private final ObjectMapper objectMapper;
 
+    private TransactionService transactionService;
+
+    private AccountResult accountResult;
+
+    private Account account;
+
+    private User user;
+
     private final HttpServletRequest request;
 
     @org.springframework.beans.factory.annotation.Autowired
@@ -49,18 +48,33 @@ public class TransactionApiController implements TransactionApi {
         this.request = request;
     }
 
-    public ResponseEntity<List<TransactionResult>> createTransaction(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody CreateTransaction body) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<TransactionResult>>(objectMapper.readValue("[ {\n  \"success\" : \"Transaction success\",\n  \"message\" : \"Finaly you made it\"\n}, {\n  \"success\" : \"Transaction success\",\n  \"message\" : \"Finaly you made it\"\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<TransactionResult>>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+    @Override
+    public ResponseEntity<Transactions> createTransaction(@Valid Transactions body) {
+        Transactions transaction = new Transactions();
+        transaction.setId(Integer.valueOf(body.getId()));
+        transaction.setFrom(accountResult.getIBAN());
+        transaction.setTo(body.getTo());
+        transaction.setAmount(body.getAmount());
+        transaction.setMessage(body.getMessage());
+        transaction.setUserPerforming(user.getFirstName());
+        transaction.setTransactionDate(OffsetDateTime.now());
+
+        double balance = account.getBalance().doubleValue();
+
+        try {
+            if (transaction.getAmount() <= transaction.GetDailyLimit() && transaction.getAmount() <= balance){
+                transactionService.createTransaction(transaction);
+                balance = balance - body.getAmount();
+                account.setBalance(BigDecimal.valueOf(balance));
+                transaction.SetDailyLimit(body.getAmount());
+                return new ResponseEntity<Transactions>(transaction, HttpStatus.OK);
             }
+
+        } catch (Exception e) {
+            return new ResponseEntity<Transactions>(HttpStatus.BAD_REQUEST);
+
         }
-
-        return new ResponseEntity<List<TransactionResult>>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Transactions>(transaction, HttpStatus.OK);
     }
-
 }

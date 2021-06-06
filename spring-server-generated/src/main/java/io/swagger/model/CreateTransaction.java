@@ -2,11 +2,10 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+
 import javax.validation.constraints.*;
 
 /**
@@ -24,7 +23,7 @@ public class CreateTransaction   {
   private String to = null;
 
   @JsonProperty("amount")
-  private BigDecimal amount = null;
+  private double amount = Double.parseDouble(null);
 
   @JsonProperty("message")
   private String message = null;
@@ -69,7 +68,7 @@ public class CreateTransaction   {
     this.to = to;
   }
 
-  public CreateTransaction amount(BigDecimal amount) {
+  public CreateTransaction amount(double amount) {
     this.amount = amount;
     return this;
   }
@@ -79,14 +78,12 @@ public class CreateTransaction   {
    * @return amount
    **/
   @Schema(example = "30.5", required = true, description = "")
-      @NotNull
 
-    @Valid
-    public BigDecimal getAmount() {
+  public double getAmount() {
     return amount;
   }
 
-  public void setAmount(BigDecimal amount) {
+  public void setAmount(double amount) {
     this.amount = amount;
   }
 

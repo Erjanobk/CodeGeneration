@@ -1,17 +1,21 @@
 package io.swagger.model;
 
+import java.time.OffsetDateTime;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.Entity;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * Transactions
  */
+@Entity
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-05-27T13:17:09.505Z[GMT]")
 
@@ -27,27 +31,31 @@ public class Transactions   {
   private String to = null;
 
   @JsonProperty("amount")
-  private BigDecimal amount = null;
+  private double amount = Double.parseDouble(null);
+
+  @JsonProperty("message")
+  private String message = null;
 
   @JsonProperty("userPerforming")
   private String userPerforming = null;
 
   @JsonProperty("transactionDate")
-  private String transactionDate = null;
+  private OffsetDateTime transactionDate = null;
+
+  private Double dailyLimit = Double.valueOf(100);
 
   public Transactions id(Integer id) {
     this.id = id;
     return this;
   }
-
   /**
    * Get id
    * @return id
    **/
   @Schema(example = "12345", required = true, description = "")
-      @NotNull
+  @NotNull
 
-    public Integer getId() {
+  public Integer getId() {
     return id;
   }
 
@@ -65,9 +73,9 @@ public class Transactions   {
    * @return from
    **/
   @Schema(example = "IBAN5555", required = true, description = "")
-      @NotNull
+  @NotNull
 
-    public String getFrom() {
+  public String getFrom() {
     return from;
   }
 
@@ -79,15 +87,18 @@ public class Transactions   {
     this.to = to;
     return this;
   }
+  public Double GetDailyLimit(){return dailyLimit;}
+
+  public void SetDailyLimit(double nr) {dailyLimit += nr;}
 
   /**
    * Get to
    * @return to
    **/
   @Schema(example = "IBAN6666", required = true, description = "")
-      @NotNull
+  @NotNull
 
-    public String getTo() {
+  public String getTo() {
     return to;
   }
 
@@ -95,7 +106,7 @@ public class Transactions   {
     this.to = to;
   }
 
-  public Transactions amount(BigDecimal amount) {
+  public Transactions amount(double amount) {
     this.amount = amount;
     return this;
   }
@@ -105,14 +116,14 @@ public class Transactions   {
    * @return amount
    **/
   @Schema(example = "25.8", required = true, description = "")
-      @NotNull
+  @NotNull
 
-    @Valid
-    public BigDecimal getAmount() {
+  @Valid
+  public double getAmount() {
     return amount;
   }
 
-  public void setAmount(BigDecimal amount) {
+  public void setAmount(double amount) {
     this.amount = amount;
   }
 
@@ -120,15 +131,27 @@ public class Transactions   {
     this.userPerforming = userPerforming;
     return this;
   }
+  /**
+   * Get message
+   * @return message
+   */
+  @Schema(example = "This money is for the groceries.", required = true, description = "")
+  @NotNull
+
+  public String getMessage(){return message;}
+
+  public void setMessage(String message) {this.message = message;}
+
+
 
   /**
    * Get userPerforming
    * @return userPerforming
    **/
   @Schema(example = "54N45GHS", required = true, description = "")
-      @NotNull
+  @NotNull
 
-    public String getUserPerforming() {
+  public String getUserPerforming() {
     return userPerforming;
   }
 
@@ -136,23 +159,24 @@ public class Transactions   {
     this.userPerforming = userPerforming;
   }
 
-  public Transactions transactionDate(String transactionDate) {
+  public Transactions transactionDate(OffsetDateTime transactionDate) {
     this.transactionDate = transactionDate;
     return this;
   }
+
 
   /**
    * Get transactionDate
    * @return transactionDate
    **/
   @Schema(example = "15-05-2021", required = true, description = "")
-      @NotNull
+  @NotNull
 
-    public String getTransactionDate() {
+  public OffsetDateTime getTransactionDate() {
     return transactionDate;
   }
 
-  public void setTransactionDate(String transactionDate) {
+  public void setTransactionDate(OffsetDateTime transactionDate) {
     this.transactionDate = transactionDate;
   }
 
@@ -167,11 +191,11 @@ public class Transactions   {
     }
     Transactions transactions = (Transactions) o;
     return Objects.equals(this.id, transactions.id) &&
-        Objects.equals(this.from, transactions.from) &&
-        Objects.equals(this.to, transactions.to) &&
-        Objects.equals(this.amount, transactions.amount) &&
-        Objects.equals(this.userPerforming, transactions.userPerforming) &&
-        Objects.equals(this.transactionDate, transactions.transactionDate);
+            Objects.equals(this.from, transactions.from) &&
+            Objects.equals(this.to, transactions.to) &&
+            Objects.equals(this.amount, transactions.amount) &&
+            Objects.equals(this.userPerforming, transactions.userPerforming) &&
+            Objects.equals(this.transactionDate, transactions.transactionDate);
   }
 
   @Override
@@ -183,7 +207,7 @@ public class Transactions   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Transactions {\n");
-    
+
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    from: ").append(toIndentedString(from)).append("\n");
     sb.append("    to: ").append(toIndentedString(to)).append("\n");
