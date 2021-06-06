@@ -84,6 +84,8 @@ public class AccountsApiController implements AccountsApi {
             Withdrawresult withdrawresult = new Withdrawresult();
             //withdrawresult.setRemainingbalance(account.getBalance());
             withdrawresult.setSuccess("withdraw success");
+            withdrawresult.setDailyLimit(700);
+            withdrawresult.setTime(LocalDateTime.now());
             return new ResponseEntity<>(withdrawresult,HttpStatus.ACCEPTED);
         }
         catch (Exception e){
