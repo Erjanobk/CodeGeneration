@@ -57,9 +57,8 @@ public class UserToCreateImpl implements UserToCreateService {
         return false;
     }
     public String login(String username,String password){
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,password));
+       // authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,password));
         UserToCreate userToCreate = userToCreateRepository.findUserToCreateByUsername(username);
-        //just to make other part work will change it later
         List<UserTypeEnum>enums=new ArrayList<>();
         enums.add(userToCreate.getUserType());
         return jwtTokenProvider.createToken(username,enums);

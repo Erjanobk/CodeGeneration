@@ -22,11 +22,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] AUTH_WHITELIST={
             "/login",
             "/register",
-            "/users",
-            "/users/{userId}",
-            "/openaccounts",
-            "/accounts",
-            "/users/{userId}/accounts",
             "/h2/**/**",
             "/swagger-ui/**/**",
             "/swagger-resources/**",
