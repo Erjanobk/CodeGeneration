@@ -48,6 +48,9 @@ public class Account   {
   public void setUser(UserToCreate user) {
     this.user = user;
   }
+  public int getUserid() {
+    return user.getUserId();
+  }
 
 
   @ManyToOne

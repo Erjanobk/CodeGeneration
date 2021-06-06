@@ -75,7 +75,7 @@ public class AccountImplamantation implements AccountService{
         Account account = getbyIban(iban);
         BigDecimal newamount = account.getBalance().add(BigDecimal.valueOf(amount));
         if (account != null) {
-            return accountRepository.updateBalance(newamount, account.getIban());
+            return accountRepository.updateBalance(newamount, account.getUserid());
         }
         else {
             throw new Exception("incorrect iban");
@@ -90,7 +90,7 @@ public class AccountImplamantation implements AccountService{
             throw new Exception("Balance too low");
         }
         else {
-            accountRepository.updateBalance(withdrawAmount,account.getIban());
+            accountRepository.updateBalance(withdrawAmount,account.getUserid());
             return getbyIban(iban);
         }
     }
