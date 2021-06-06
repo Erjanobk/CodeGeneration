@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface UserToCreateService {
     UserToCreate createUser(RegistrationDTO registrationDTO) throws Exception;
     boolean cheackMail(RegistrationDTO registrationDTO);
-    String login(String username,String password);
+    String login(String username,String password) throws Exception;
     List<UserToCreate> getALLUsers();
     UserToCreate getAllUsersByUserName(String username);
     UserToCreate getUserByUserId(Integer userId) throws Exception;

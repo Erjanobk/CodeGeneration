@@ -38,11 +38,16 @@ public class LoginApiController implements LoginApi {
         this.request = request;
     }
 
-    public ResponseEntity<JwtToken> getlogin(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody UserLogin body) {
-        String key = userToCreate.login(body.getUsername(), body.getPassword());
-        JwtToken jwtToken = new JwtToken();
-        jwtToken.setKey(key);
-        return new ResponseEntity<JwtToken>(jwtToken, HttpStatus.OK);
+    public ResponseEntity<JwtToken> getlogin(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody UserLogin body) throws Exception {
+
+        try {
+            String key = userToCreate.login(body.getUsername(), body.getPassword());
+            JwtToken jwtToken = new JwtToken();
+            jwtToken.setKey(key);
+            return new ResponseEntity<JwtToken>(jwtToken, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<JwtToken>( HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

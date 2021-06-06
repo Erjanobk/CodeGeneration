@@ -56,12 +56,15 @@ public class UserToCreateImpl implements UserToCreateService {
         }
         return false;
     }
-    public String login(String username,String password){
-       // authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,password));
+    public String login(String username,String password) throws Exception {
         UserToCreate userToCreate = userToCreateRepository.findUserToCreateByUsername(username);
         List<UserTypeEnum>enums=new ArrayList<>();
         enums.add(userToCreate.getUserType());
+        if(userToCreate!=null){
         return jwtTokenProvider.createToken(username,enums);
+        }else {
+            throw new Exception("User name or password is wrong");
+        }
     }
     public List<UserToCreate> getALLUsers(){
         return (List<UserToCreate>) userToCreateRepository.findAll();
@@ -70,8 +73,8 @@ public class UserToCreateImpl implements UserToCreateService {
         return (UserToCreate) userToCreateRepository.findUserToCreateByUsername(username);
     }
     public UserToCreate getUserByUserId(Integer userId) throws Exception {
-        if(userId!=null){
         UserToCreate user = userToCreateRepository.findUserToCreateByUserId(userId);
+        if(user!=null){
         return user;
         }
         else {
