@@ -54,16 +54,18 @@ public interface AccountsApi {
 
 
     @Operation(summary = "Close account", description = "this will delete the account using the account id", security = {
-        @SecurityRequirement(name = "bearerAuth")    }, tags={ "Accounts" })
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "204", description = "Account has been closed"),
-        
-        @ApiResponse(responseCode = "400", description = "Parameters are incorrect"),
-        
-        @ApiResponse(responseCode = "404", description = "Id was not found") })
-    @RequestMapping(value = "/accounts/close/{IBAN}",
-        method = RequestMethod.DELETE)
-    ResponseEntity<Void> accountID(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("IBAN") Integer IBAN);
+            @SecurityRequirement(name = "bearerAuth")    }, tags={ "Accounts" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Account has been closed"),
+
+            @ApiResponse(responseCode = "400", description = "Parameters are incorrect"),
+
+            @ApiResponse(responseCode = "404", description = "Id was not found"),
+
+            @ApiResponse(responseCode = "405", description = "method not allowed") })
+    @RequestMapping(value = "/accounts/{IBAN}",
+            method = RequestMethod.DELETE)
+    ResponseEntity<Void> closeAccount(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("IBAN") String IBAN);
 
 
     @Operation(summary = "this will allow a user to withdraw money from his account", description = "", security = {

@@ -116,4 +116,14 @@ public class AccountsApiController implements AccountsApi {
         }
     }
 
+    public ResponseEntity<Void> closeAccount(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("IBAN") String IBAN) {
+        try{
+            accountService.closeAccount(IBAN);
+            return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+        }catch(Exception exception){
+
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

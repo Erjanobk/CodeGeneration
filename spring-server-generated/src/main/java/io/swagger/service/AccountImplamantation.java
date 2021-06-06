@@ -105,5 +105,17 @@ public class AccountImplamantation implements AccountService{
         }
     }
 
+    @Override
+    public void closeAccount(String iban){
+        Account account = getbyIban(iban);
+        if(account!=null){
+            accountRepository.delete(account);
+        }
+        else{
+            throw new EntityNotFoundException("Account does not exit");
+        }
+
+    }
+
 
 }
