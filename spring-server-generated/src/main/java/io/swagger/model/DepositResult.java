@@ -1,8 +1,8 @@
 package io.swagger.model;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import org.springframework.validation.annotation.Validated;
@@ -24,7 +24,7 @@ public class DepositResult   {
   private BigDecimal currentBalance = null;
 
   @JsonProperty("time")
-  private String time = null;
+  private LocalDateTime time = null;
 
   public DepositResult success(String success) {
     this.success = success;
@@ -67,7 +67,7 @@ public class DepositResult   {
     this.currentBalance = currentBalance;
   }
 
-  public DepositResult time(String time) {
+  public DepositResult time(LocalDateTime time) {
     this.time = time;
     return this;
   }
@@ -77,13 +77,12 @@ public class DepositResult   {
    * @return time
    **/
   @Schema(example = "02:00 PM", required = true, description = "")
-      @NotNull
 
-    public String getTime() {
+  public LocalDateTime getTime() {
     return time;
   }
 
-  public void setTime(String time) {
+  public void setTime(LocalDateTime time) {
     this.time = time;
   }
 

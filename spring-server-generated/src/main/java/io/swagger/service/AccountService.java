@@ -6,8 +6,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 public interface AccountService {
-    void save(Account account);
-    Account GetAccountbyName(String name);
-    String ibanFormat();
     List<Account> getAllByUser(Integer userId) throws Exception;
+    void save(Account account) throws Exception;
+    List<Account> GetAccountbyName(String name);
+    String ibanFormat();
+    boolean ibanCheck(String iban);
+    Account getbyIban(String iban);
+    int deposit(String iban, int amount) throws Exception;
+    Account withdraw(String iban,int amount) throws Exception;
 }

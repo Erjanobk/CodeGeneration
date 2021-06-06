@@ -31,10 +31,12 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -57,18 +59,18 @@ public class AccountsApiController implements AccountsApi {
         this.request = request;
     }
 
-    public ResponseEntity<DepositResult> accountDeposit(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("iban") Integer iban,@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Deposit body) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<DepositResult>(objectMapper.readValue("{\n  \"success\" : \"Deposit success\",\n  \"CurrentBalance\" : 120,\n  \"time\" : \"02:00 PM\"\n}", DepositResult.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<DepositResult>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+    public ResponseEntity<DepositResult> accountDeposit(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("iban") String iban,@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Deposit body) {
+        try {
+            accountService.deposit(iban, body.getDepositAmount());
+            DepositResult result = new DepositResult();
+            result.setSuccess("Balance deposited successfuly");
+            result.setTime(LocalDateTime.now());
+            //result.setCurrentBalance(amount);
+            return new ResponseEntity<DepositResult>(result, HttpStatus.OK);
         }
-
-        return new ResponseEntity<DepositResult>(HttpStatus.NOT_IMPLEMENTED);
+        catch (Exception e){
+            return ResponseEntity.status((HttpStatus.BAD_GATEWAY)).build();
+        }
     }
 
     public ResponseEntity<Void> accountID(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("IBAN") Integer IBAN) {
@@ -76,37 +78,40 @@ public class AccountsApiController implements AccountsApi {
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Withdrawresult> accountWithdrawl(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("iban") Integer iban,@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Withdraw body) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Withdrawresult>(objectMapper.readValue("{\n  \"remainingbalance\" : 80,\n  \"success\" : \"withdraw success\",\n  \"dailyLimit\" : 80,\n  \"time\" : \"12:00 PM\"\n}", Withdrawresult.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Withdrawresult>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+    public ResponseEntity<Withdrawresult> accountWithdrawl(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("iban") String iban,@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Withdraw body) {
+        try {
+            Account account = accountService.withdraw(iban,body.getWithdrawAmount());
+            Withdrawresult withdrawresult = new Withdrawresult();
+            //withdrawresult.setRemainingbalance(account.getBalance());
+            withdrawresult.setSuccess("withdraw success");
+            return new ResponseEntity<>(withdrawresult,HttpStatus.ACCEPTED);
         }
-
-        return new ResponseEntity<Withdrawresult>(HttpStatus.NOT_IMPLEMENTED);
+        catch (Exception e){
+            return ResponseEntity.status((HttpStatus.BAD_GATEWAY)).build();
+        }
     }
 
-    public ResponseEntity<Account> getAccount(@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "name", required = true) String name) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Account>(accountService.GetAccountbyName(name),HttpStatus.OK);
+    public ResponseEntity<List<Account>> getAccount(@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "name", required = true) String name) {
+        List<Account> accounts = accountService.GetAccountbyName(name);
+        try {
+            return new ResponseEntity<List<Account>>(accounts,HttpStatus.OK);
+        }
+        catch (EntityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(accounts);
+        }
+
     }
 
     public ResponseEntity<Account> getAccounts(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("IBAN") String IBAN) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Account>(objectMapper.readValue("{\n  \"account_type\" : \"savings\",\n  \"balance\" : 100,\n  \"name\" : \"Mr Joshua\"\n}", Account.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Account>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+        Account account = accountService.getbyIban(IBAN);
+        try {
+            return new ResponseEntity<Account>(account,HttpStatus.OK);
         }
-
-        return new ResponseEntity<Account>(HttpStatus.NOT_IMPLEMENTED);
+        catch (IllegalStateException e){
+            return new ResponseEntity<Account>(account,HttpStatus.BAD_REQUEST);
+            //throw new IllegalStateException(e.getMessage());
+            //return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
 }
